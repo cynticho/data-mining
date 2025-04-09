@@ -1,0 +1,578 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage{array,multirow,makecell}
+\setcellgapes{1pt}
+\usepackage{ragged2e}
+\usepackage[french]{babel}  
+\usepackage[table]{xcolor}
+\usepackage{ragged2e}
+\usepackage{graphicx}
+\usepackage[style=numeric]{biblatex}
+\addbibresource{references.bib}    
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{csquotes}
+ 
+
+
+\title{{\Large \textbf{Chapitre 14: Pré-traitement et Post-traitement.}}}
+\author{ \textbf{(Université de dschang)}}
+
+\begin{document}
+	\setlength{\arrayrulewidth}{0.5mm}   % Épaisseur des lignes du tableau
+	\setlength{\tabcolsep}{12pt}          % Espacement entre les colonnes
+	\renewcommand{\arraystretch}{1.5} 
+	
+	\justifying
+	
+	
+	\begin{center}
+		\begin{figure}
+			\begin{center}
+				\includegraphics[scale=.53]{./logo dschang entete}
+			\end{center}
+		\end{figure}
+		\maketitle
+		\paragraph{Rédigé Par :} 
+		\subparagraph{}
+			\centering
+			\begin{tabular}	{|c|c|}
+				\hline \rowcolor{cyan} \textbf{{\large Noms et prénoms}} & \textbf{{\large Matricules}}\\ \hline
+				{KENFACK FONGANG Victor Cyntiche *} & CM-UDS-21SCI0555\\
+				\hline
+				{MFENTAM Mohammed Salam} & CM-UDS-21SCI0941\\
+				\hline
+				{KOUOKAM TALLA Eugene Asaph} & CM-UDS-21SCI0021\\
+				\hline
+				{CHEGUEP Marcelle Fadhy} & CM-UDS-21SCI0709\\
+				\hline
+			\end{tabular}
+		 \subparagraph{ } Sous la supervision de :  \textbf{Pr KENGNE TCHENDJI Vianney.}
+		\subparagraph{} Année académique: \textbf{2024/2025}
+	\end{center}
+\begin{center}
+		
+
+\end{center}
+	
+	\thispagestyle{empty}
+	\newpage
+	
+	\tableofcontents
+	\newpage
+	\listoffigures
+	\newpage
+	\section{Introduction} De nos jours nous collectons de plus en plus de grandes
+	masses de données et nous récoltons plus que nous pouvons en
+	traiter ; ainsi, les capacités de stockage sont en progression
+	quasi exponentielles. Les données accumulées sont souvent
+	brutes et loin d’être de bonnes qualités; elles contiennent des
+	valeurs manquantes, du bruit, et surtout des informations
+	redondantes.
+	La présence des valeurs manquantes et la redondance de
+	l’information au niveau des dimensions sont des inconvénients
+	bien souvent insurmontables pour la plupart des algorithmes
+	de data mining. Intuitivement, l’information pertinente est
+	noyée dans de nombreux attributs et d’entrées que son
+	extraction n’est possible que si les données originales sont
+	nettoyées et pré-traitées.
+	Pour remédier à ce problème et aussi au problème de très
+	grandes tailles des données, nous proposons une nouvelle
+	technique de pré-traitement de données qui vise à éliminer les
+	valeurs manquantes, les bruits, et les attributs redondants et
+	aussi de réduire leur taille en générant des échantillons
+	représentatifs et de qualités.
+	Le pré-traitement et le post-traitement sont des tâches cruciales dans la découverte de connaissances dans les bases de données KDD \footnote{KDD : Knowledge Discovery in Databases}. 
+	Le KDD correspond à des processus avancés de gestion des données qui, au cours des dernières années, sont devenus très intéressants pour les chercheurs dans le domaine de l'ingénierie. 
+	Les étapes des processus KDD sont les suivantes :
+	\begin{enumerate}
+		\item compréhension du domaine, 	
+		\item collecte des données,
+		\item pré-traitement des données, 
+		\item exploration des données,
+		\item et le post-traitement des connaissances dérivées
+	\end{enumerate}
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.3]{./data mining2}
+		\caption{KDD}
+	\end{figure}
+	Les données doivent être traitées par un algorithme d'acquisition de connaissances. Le problème majeur est dont que ces données sont généralement bruyantes, incomplètes et souvent incohérentes. 
+	\paragraph{}Ainsi, De nombreuses étapes doivent être réalisées avant l'analyse des données proprement dite. C'est la raison pour laquelle des procédures de pré-traitement sont en constante évolution.
+	\paragraph{}De même, un résultat provenant d'un algorithme d'apprentissage automatique en utilisant des données non traitées, tel qu'un arbre de décision, un ensemble de règles de décision ou un réseau neuronal artificiel etc., peut s’avérer être inapproprié du point de vue des clients ou pour un usage commercial. Par conséquent, une description conceptuelle (modèle, base de connaissances) produite par  un tel processus inductif doit généralement être traitée a posteriori. D’où Les procédures de post-traitement. Elles comprennent généralement des routines variées d'élagage, de filtrage des règles ou même d'intégration des connaissances
+	\paragraph{}Les tâches de pré et post-traitement dans l'exploration de données appliquées à un problème réel  soulèvent donc l'importance de la préparation des données en raison de trois aspects :
+	\begin{itemize}
+		\item les données du monde réel sont très difficiles à traiter car elles sont impures ; 
+		\item 	les systèmes d'exploration à haute performance nécessitent des données de qualité ;
+		\item et des données de qualité permettent d'obtenir et produisent des résultats de haute qualité.
+	\end{itemize}
+	\paragraph{}Dans la suite, nous présentons des techniques traditionnelles et bien connues de pré-traitement et de post-traitement dans le but de montrer son importance dans l'exploration de données (DM\footnote{DM : Data Mining}), et de renforcer le besoin d'interprétabilité des résultats lorsqu'il s'agit de données réelles. L’interprétation des résultats lors du traitement d'un ensemble de données réelles. 
+	\section{Pré-traitement}
+	\subsection{Qu’est-ce que le pré-traitement des données ?}Le pré-traitement des données consiste à évaluer, filtrer, manipuler et encoder les données afin qu'un algorithme d'apprentissage automatique puisse les comprendre et exploiter les résultats. L'objectif principal du pré-traitement des données est d'éliminer les problèmes tels que les valeurs manquantes, d'améliorer la qualité des données et de les rendre utiles à l’analyse de données. il comprend les étapes que nous devons suivre pour transformer ou encoder les données afin qu'elles puissent être facilement analysées par la machine. 
+	\paragraph{}L’objectif principal pour qu’un modèle soit précis et exact dans ses prédictions est que l’algorithme soit capable d’interpréter facilement les caractéristiques des données. 
+	\paragraph{}
+	Cette tâche prend généralement beaucoup de temps (entre 70\% et 80\%), surtout lorsque de nombreuses agrégations sont nécessaires sur les données. Les opérations effectuées dans le cadre d'un processus de pré-traitement peuvent être réduites à deux grandes familles de techniques :
+	\begin{itemize}
+		\item \textbf{Les techniques de détection (DT\footnote{DT: Detection Technique})} pour détecter les imperfections dans les ensembles de données 
+		\item \textbf{et les techniques de transformation (TT\footnote{TT: Transformation Technique})} orientées vers l'obtention de données plus précises.
+	\end{itemize}
+	\paragraph{}D’une part, Les DT comprennent la détection des valeurs aberrantes, la détection des données manquantes, détection des observations influentes, l'évaluation de la normalité, de la linéarité et de l'indépendance. 
+	\paragraph{}D'autre part, Les techniques de transformation (TT) visant à obtenir des ensembles de données plus faciles à gérer et  comprend le traitement des valeurs aberrantes, l'amputation des données manquantes, les techniques de réduction de dimension ou de projection des données, les techniques de dérivation de nouveaux attributs, le filtrage et le ré-échantillonnage. 
+	\paragraph{}En outre, les statistiques de nettoyage des données et les techniques de visualisation jouent également un rôle important dans le pré-traitement des données. 
+	\subsection{Pourquoi le pré-traitement des données ?}Les algorithmes basés sur les données sont des équations statistiques qui opèrent sur les valeurs d'une base de données. Comme le dit l'adage : « Si des données erronées entrent, des données erronées sortent. » La réussite de votre projet de données dépend des données d'entrée que vous alimentez.
+	\paragraph{}Étant donné que de nombreuses personnes, processus métier et applications produisent, traitent et stockent fréquemment des données réelles, le processus est voué à devenir chaotique. Ce phénomène est généralement dû à des erreurs manuelles, des événements imprévus, des défaillances technologiques ou à plusieurs autres facteurs. Les algorithmes ne peuvent pas ingérer de données incomplètes ou bruitées, car ils ne sont généralement pas conçus pour gérer les valeurs manquantes. Or, le bruit perturbe la structure réelle de l'échantillon.
+	\paragraph{}C'est pourquoi le pré-traitement des données est nécessaire pour presque tous les types d'analyse de données, de science des données et de développement d'IA afin de produire des résultats fiables, précis et résilients pour les applications d'entreprise.
+	\paragraph{}De plus, La majorité des ensembles de données du monde réel pour l’apprentissage automatique sont très susceptibles d’être manquants, incohérents et bruyants en raison de leur origine hétérogène. 
+	\subparagraph{}L'application d'algorithmes d'exploration de données à ces données bruitées ne donnerait pas de résultats de qualité, car ils ne parviendraient pas à identifier efficacement les tendances. Le pré-traitement des données est donc important pour améliorer la qualité globale des données.
+	\subparagraph{}Les valeurs en double ou manquantes peuvent donner une vue incorrecte des statistiques globales des données.
+	\subparagraph{}Les valeurs aberrantes et les points de données incohérents ont souvent tendance à perturber l’apprentissage global du modèle, conduisant à de fausses prédictions.
+	\subparagraph{}Les décisions de qualité doivent être fondées sur des données de qualité. Le pré-traitement des données est essentiel pour obtenir ces données de qualité, sans quoi le scénario serait un véritable échec.
+	\subsection{Importance la préparation des données }Les algorithmes de data mining sont plus performants lorsque les données sont présentées de manière à simplifier la résolution d'un problème.
+	Le traitement, la transformation et la réduction des données, la sélection et la mise à l'échelle des caractéristiques sont autant d'exemples d'approches de pré-traitement des données utilisées par les équipes pour réorganiser les données brutes dans un format adapté à certains algorithmes. Cela peut réduire considérablement la puissance de traitement et le temps nécessaires à l'entraînement d'un nouveau système d'apprentissage automatique ou d'IA, ou à la réalisation d'une inférence.
+	\subparagraph{\textbf{Il améliore la qualité des données :}}Le pré-traitement des données est la voie rapide vers l'amélioration de la qualité des données, car bon nombre de ses étapes reflètent les activités que vous trouverez dans tout processus de gestion de la qualité des données , telles que le nettoyage des données, le profilage des données, l'intégration des données, etc.
+	\subparagraph{\textbf{Il gère les données manquantes :}}
+	\subparagraph{\textbf{Il normalise et met à l'échelle les données :}}Plusieurs raisons peuvent expliquer l'absence de valeurs dans une collection de données (certains champs de données). Les praticiens des données doivent déterminer s'il est préférable de rejeter les enregistrements manquants, de les ignorer ou de les compléter avec une valeur estimée.
+	\subparagraph{\textbf{Il normalise et met à l'échelle les données :}}Les variables dépendantes et indépendantes évoluent à des échelles distinctes, ou bien l'une évolue linéairement tandis que l'autre évolue de manière exponentielle. Le salaire, par exemple, peut être exprimé en chiffres multiples, tandis que l'âge est exprimé en chiffres à deux chiffres. La normalisation et la mise à l'échelle permettent de modifier les données de manière à permettre aux ordinateurs d'établir un lien significatif entre ces variables.
+	\subparagraph{\textbf{Il élimine les doublons d'enregistrements :}}Lorsque deux enregistrements semblent se répéter, un algorithme doit déterminer si la même mesure a été saisie deux fois ou si les données reflètent des occurrences distinctes. Dans de rares cas, un enregistrement peut présenter des divergences mineures dues à un champ erroné. Des techniques de recherche, de suppression ou de connexion des doublons permettent de résoudre automatiquement ces problèmes de qualité des données.
+	\subparagraph{\textbf{Il gère les valeurs aberrantes :}}Les spécialistes des données doivent parfois fusionner plusieurs sources de données pour construire un nouveau modèle. L'analyse en composantes principales, par exemple, est une technique importante pour réduire le nombre de dimensions dans l'ensemble de données d'entraînement et produire une représentation plus efficace.
+	\subparagraph{\textbf{contribue à améliorer les performances du modèle :}}Le pré-traitement implique souvent le développement de nouvelles fonctionnalités ou la modification de fonctionnalités existantes afin de mieux cerner le problème sous-jacent et d'améliorer les performances du modèle. Cela peut inclure le codage de variables de catégorie, le développement de termes d'interaction et la récupération de données pertinentes à partir de textes ou d'horodatages.
+	\subsection{étapes de pré-traitement des données }
+	\subsubsection{Acquérir l'ensemble de données}Naturellement, la collecte de données constitue la première étape de tout projet d'apprentissage automatique et la première des étapes de pré-traitement des données. La collecte de données peut sembler simple, mais c'est loin d'être le cas.
+	La plupart des entreprises finissent par conserver leurs données en silos et les répartir entre plusieurs services, équipes et solutions numériques. Par exemple, l'équipe marketing peut avoir accès à un système CRM, mais celui-ci peut fonctionner indépendamment de la solution d'analyse web. Combiner tous les flux de données dans un stockage consolidé s'avère complexe.
+	\subsubsection{Charger les données}une fois les donnes collecté, comme à notre habitude, on va charger nos données.
+	\subsubsection{Importer des bibliothèques}Il est ensuite temps d'importer les bibliothèques nécessaires à votre projet d'apprentissage automatique. Une bibliothèque est un ensemble de fonctions qu'un algorithme peut appeler et utiliser.
+	Vous pouvez rationaliser les procédures de pré-traitement des données grâce à des outils et des frameworks qui simplifient l'organisation et l'exécution du processus. Sans certaines bibliothèques, le codage et l'optimisation de solutions simples peuvent prendre des heures.
+	\subsubsection{Importer des ensembles de données}L'étape clé suivante consiste à charger les données qui seront utilisées. Il s'agit de l'étape de pré-traitement la plus critique.
+	De nombreuses entreprises commencent par stocker leurs données dans des entrepôts, qui nécessitent un ETL\footnote{ETL: Extraction, Transformation and Loading}. Le problème avec cette méthode est qu'on ne sait jamais quelles données seront utiles à un projet. Par conséquent, les entrepôts sont couramment utilisés pour accéder aux données via des interfaces de business intelligence afin d'observer les indicateurs que nous savons devoir surveiller.
+	Les lacs de données sont utilisés pour les données structurées et non structurées, notamment les photos, les vidéos, les enregistrements vocaux et les fichiers PDF. Cependant, même structurées, les données ne sont pas transformées avant leur stockage. Vous chargez les données telles quelles, puis vous décidez comment les utiliser et les modifier ultérieurement.
+	\subsubsection{Vérifiez les valeurs manquantes}Évaluez les données et recherchez les valeurs manquantes. Ces dernières peuvent perturber les tendances réelles et entraîner des pertes de données supplémentaires lorsque des lignes et des colonnes entières sont supprimées en raison de quelques cellules manquantes dans l'ensemble de données.
+	Si vous en découvrez, vous pouvez choisir entre deux méthodes pour résoudre ce problème :
+	\begin{itemize}
+		\item[*] Supprimez la ligne entière contenant une valeur manquante. Cependant, supprimer une ligne entière augmente le risque de perte de données critiques. Cette stratégie est avantageuse si l'ensemble de données est volumineux. 
+		\item[*] 	Estimez la valeur en utilisant la moyenne, la médiane ou le mode.
+	\end{itemize}
+	\subsubsection{Encoder les données }Les données non numériques sont incompréhensibles pour les modules d'apprentissage automatique. Pour éviter tout problème ultérieur, il est conseillé de les organiser numériquement. La solution consiste à convertir toutes les valeurs textuelles en valeurs numériques. L’encodage est une étape essentielle pour pouvoir faire du data mining. En effet, il permet de transformer les données texte en chiffres que la machine peut interpréter ou que la machine peut comprendre. Il existe différents types d’encodage et nous allons dès maintenant aborder les plus connus :
+	\begin{itemize}
+		\item[*] \textbf{One-Hot Encoding :}Le One-Hot Encoding est à la fois la méthode la plus connu, la plus simple à réaliser, qui consite à créer un dictionnaire avec tous les mots qui apparaissent dans nos phrases nettoyées.Ce dictionnaire est en fait un tableau où chaque colonne représente un mot et chaque ligne représente une phrase.
+		Si tel mot apparaît dans tel phrase, on met une valeur de 1 dans l’élément du tableau, sinon on met une valeur de 0.
+		On aura donc un tableau composé uniquement de 0 et de 1.
+		Le seul inconvénient du One-Hot Encoding c’est que l’on perd la hiérarchie, l’ordre des mots. Cela nous fait donc perdre le contexte, le sens de la phrase et en théorie cela devrait appauvrir les résultats de notre modèle.
+		\item[*] \textbf{Word embeddings (Encodage Hiérarchique ):}Ici on utilise un autre type d’encodage: l’encodage hiérarchique.
+		Contrairement au One-Hot Encoding, vous vous en doutez, on garde la hiérarchie, l’ordre des mots et donc le sens de la phrase.
+	\end{itemize}
+	\subsubsection{Mise à l'échelle}La mise à l'échelle est inutile pour les algorithmes non basés sur la distance (comme l'arbre de décision). Les modèles basés sur la distance, en revanche, nécessitent que toutes les caractéristiques soient mises à l'échelle.
+
+	
+	\subsubsection{Diviser l'ensemble de données en ensembles d'entraînement, d'évaluation et de validation}Il s'agit de la dernière étape du pré-traitement des données. Il est temps de diviser votre jeu de données en ensembles d'entraînement, d'évaluation et de validation. L'ensemble d'entraînement correspond aux données que vous utiliserez pour entraîner votre modèle de machine learning. L'ensemble d'évaluation analysera les données et le modèle, tandis que l'ensemble de validation le validera.
+	\subsection{Exemples et techniques de pré-traitement des données}
+	\subsubsection{	Nettoyage des données}Une fois que les données sont chargées il faut les nettoyer.
+	L’objectif ici est d’identifier la solution la plus simple pour corriger les problèmes de qualité, tels que la suppression des données incorrectes, le remplissage des données manquantes ou la garantie que les données brutes sont appropriées pour l’ingénierie des fonctionnalités, en lissant les données bruyantes, en résolvant les incohérences et en supprimant les valeurs aberrantes.
+	\begin{enumerate}
+		\item \textbf{Valeurs manquantes :}\\Voici quelques façons de résoudre ce problème :
+		\begin{itemize}
+			\item[*] Ignorez ces tuples
+			Cette méthode doit être envisagée lorsque l’ensemble de données est volumineux et que de nombreuses valeurs manquantes sont présentes dans un tuple.
+			\item[*]	Remplissez les valeurs manquantes 
+			Il existe de nombreuses méthodes pour y parvenir, comme le remplissage manuel des valeurs, la prédiction des valeurs manquantes à l'aide de la méthode de régression ou de méthodes numériques comme la moyenne des attributs, le smoothing(lissage) etc.
+		\end{itemize}
+		\item \textbf{Données bruyantes :}\\ Il s'agit d'éliminer une erreur aléatoire ou une variance d'une variable mesurée. Cela peut être réalisé à l'aide des techniques suivantes :
+			\begin{itemize}
+				\item[*] Binning: Il s'agit d'une technique qui s'applique aux valeurs de données triées afin de lisser le bruit qu'elles contiennent. Les données sont divisées en compartiments de taille égale, chaque compartiment étant traité indépendamment. Toutes les données d'un segment peuvent être remplacées par leur moyenne, leur médiane ou leurs valeurs limites.
+				\item[*] 	Régression: Cette technique d'exploration de données est généralement utilisée à des fins de prédiction. Elle permet de lisser le bruit en intégrant tous les points de données dans une fonction de régression. L'équation de régression linéaire est utilisée s'il n'y a qu'un seul attribut indépendant ; sinon, des équations polynomiales sont utilisées.
+				\item[*] Regroupement: Création de groupes/clusters à partir de données ayant des valeurs similaires. Les valeurs non incluses dans le cluster peuvent être traitées comme des données bruitées et supprimées.
+			\end{itemize}
+		\item \textbf{ Suppression des valeurs aberrantes :} Les techniques de clustering regroupent des points de données similaires. Les tuples situés en dehors du cluster sont des valeurs aberrantes/incohérentes.
+	\end{enumerate}
+		
+		Garder en tête cependant que pour certains type de problèmes il peut être intéressant de préserver certains types de caractères.\\
+		Par exemple : pour analyser si un email est un spam ou non, on peut imaginer que les ‘!’ sont un bon indicateur et donc ne pas les enlever lors du nettoyage.
+		\begin{center}
+			\includegraphics[scale=.6]{./pre post-processing 2}
+		\end{center}
+	\subsubsection{Transformation des données}L'une des étapes les plus importantes de la phase de préparation est la transformation des données , qui consiste à les convertir d'un format à un autre. Certains algorithmes nécessitent une modification des données d'entrée .
+	Une fois le nettoyage des données effectué, nous devons consolider les données de qualité sous des formes alternatives en modifiant la valeur, la structure ou le format des données à l'aide des stratégies de transformation des données mentionnées ci-dessous. 
+	\begin{itemize}
+		\item[*] \textbf{Réduction des données :} Les collections de données brutes contiennent souvent des données en double résultant de diverses méthodes de définition d'événements, ainsi que du matériel qui ne fonctionne tout simplement pas pour votre architecture d'apprentissage automatique ou la portée de votre projet.
+		Les techniques de réduction des données, telles que l’analyse en composantes principales, sont utilisées pour convertir les données brutes dans un format simplifié adapté à certains cas d’utilisation.
+		\begin{enumerate}
+			\item {\textbf{Agrégation de cubes de données :}}Il s’agit d’une méthode de réduction des données, dans laquelle les données collectées sont exprimées sous une forme résumée. 
+			\item {\textbf{Réduction de dimension :}}Les techniques de réduction de dimension permettent d'extraire des caractéristiques. La dimension d'un jeu de données désigne les attributs ou les caractéristiques individuelles des données. Cette technique vise à réduire le nombre de caractéristiques redondantes prises en compte dans les algorithmes d'apprentissage automatique. La réduction de dimension peut être réalisée à l'aide de techniques telles que l'analyse en composantes principales.
+			\item {\textbf{Compression des données :}}L'utilisation de technologies de codage permet de réduire considérablement la taille des données. Cependant, la compression des données peut être avec ou sans perte. Si les données originales peuvent être récupérées après reconstruction à partir des données compressées, on parle de réduction sans perte ; dans le cas contraire, on parle de réduction avec perte. 
+			\item {\textbf{Discrétisation :}}
+			La discrétisation des données permet de diviser les attributs continus en données avec intervalles. Cette méthode est utilisée car les caractéristiques continues ont tendance à avoir une plus faible probabilité de corrélation avec la variable cible. Par conséquent, l'interprétation des résultats peut être plus complexe. Après discrétisation d'une variable, les groupes correspondant à la cible peuvent être interprétés. Par exemple, l'âge d'un attribut peut être discrétisé en tranches telles que : moins de 18 ans, 18-44 ans, 44-60 ans et plus de 60 ans.
+			\item {\textbf{Réduction de la numérotation :}}Réduction de la numérotation
+			Les données peuvent être représentées sous forme de modèle ou d'équation, comme un modèle de régression. Cela permettrait d'éviter de stocker d'énormes ensembles de données plutôt qu'un modèle.
+			\item {\textbf{Sélection de sous-ensembles d'attributs :}}
+			Il est essentiel de sélectionner les attributs avec précision. Dans le cas contraire, des données de grande dimension pourraient être générées, difficiles à entraîner en raison de problèmes de sous-apprentissage ou de sur-apprentissage. Seuls les attributs apportant une valeur ajoutée à l'entraînement du modèle doivent être pris en compte, les autres pouvant être ignorés.
+			\item {\textbf{Normalisation :}}Il s'agit de la technique de transformation de données la plus répandue. Les attributs numériques sont agrandis ou réduits pour s'adapter à une plage spécifiée. Dans cette approche, nous limitons notre attribut de données à un conteneur spécifique afin de développer une corrélation entre différents points de données. La normalisation peut s'effectuer de plusieurs manières, présentées ici :
+			\begin{itemize}
+				\item 	Normalisation min-max
+				\item Normalisation du score Z
+				\item Normalisation de l'échelle décimale
+			\end{itemize}
+			\item {\textbf{Généralisation :}}Les données de bas niveau ou granulaires sont converties en informations de haut niveau grâce à des hiérarchies de concepts. Nous pouvons transformer les données primitives de l'adresse, comme la ville, en informations de niveau supérieur, comme le pays.
+			\item {\textbf{Agrégation :}}Il s'agit d'une méthode de stockage et de présentation de données sous forme synthétique. Par exemple, pour les ventes, les données peuvent être agrégées et transformées pour être affichées au format mensuel ou annuel.
+			
+			\item {\textbf{Intégration des données :}}L'intégration des données est l'une des étapes de pré-traitement des données utilisées pour fusionner les données présentes dans plusieurs sources dans un seul magasin de données plus grand comme un entrepôt de données.
+			\subparagraph{}L'intégration des données est particulièrement nécessaire lorsqu'il s'agit de résoudre un scénario concret comme la détection de nodules à partir d'images de tomodensitométrie. La seule solution consiste à intégrer les images de plusieurs nœuds médicaux pour constituer une base de données plus vaste.
+			\subparagraph{}Nous pourrions rencontrer certains problèmes lors de l’adoption de l’intégration des données comme l’une des étapes de pré-traitement des données :
+			\begin{itemize}
+				\item 	Intégration de schéma et correspondance d'objets : les données peuvent être présentes dans différents formats et attributs qui peuvent entraîner des difficultés dans l'intégration des données. 
+				\item Suppression des attributs redondants de toutes les sources de données. 
+				\item Détection et résolution des conflits de valeurs de données: La taille de l’ensemble de données dans un entrepôt de données peut être trop importante pour être gérée par les algorithmes d’analyse et d’exploration de données.
+				Une solution possible consiste à obtenir une représentation réduite de l’ensemble de données, beaucoup plus petite en volume mais produisant la même qualité de résultats analytiques
+			\end{itemize}
+		\end{enumerate}
+	\end{itemize}
+	
+	\subsubsection{Ingénierie des fonctionnalités}La stratégie d'ingénierie des caractéristiques vise à produire de meilleures caractéristiques pour votre jeu de données, ce qui optimisera les performances du modèle. Nous utilisons principalement les connaissances du domaine pour produire ces caractéristiques, que nous générons manuellement à partir de caractéristiques existantes après leur avoir appliqué une transformation.
+	\subparagraph{}Voici quelques exemples simples pour vous aider à comprendre cela :
+	Imaginez que vos données contiennent une caractéristique de couleur de cheveux avec des valeurs de brun, noir ou inconnue. Dans ce cas, vous pouvez ajouter une nouvelle colonne intitulée « a une couleur » et attribuer la valeur 1 si la couleur est présente et 0 si la valeur est inconnue.
+	\subparagraph{}Un autre exemple est la dé-construction d'une caractéristique date/heure, qui fournit des informations importantes, mais est difficile à exploiter dans un modèle dans son format d'origine. Ainsi, si vous pensez que votre problème implique des dépendances temporelles et que vous découvrez un lien entre la date/heure et la variable de sortie, consacrez du temps à essayer de transformer cette colonne date/heure en une caractéristique plus intelligible pour votre modèle, telle que « période de la journée », « jour de la semaine », etc.
+	\subsubsection{Données déséquilibrées}L’un des problèmes les plus courants que vous pouvez rencontrer lorsque vous travaillez avec la catégorisation de données du monde réel est que les classes sont déséquilibrées (l’une contient plus d’échantillons que l’autre), ce qui entraîne un biais important pour le modèle.
+	Imaginez que vous souhaitiez prédire si une transaction est frauduleuse. D'après vos données d'entraînement, 95\% de votre ensemble de données est constitué d'enregistrements de transactions légitimes, tandis que seulement 5\% sont des transactions frauduleuses. Sur cette base, votre modèle prédira probablement la classe majoritaire, identifiant les transactions frauduleuses comme d'habitude.
+	Pour résoudre cette faiblesse dans l’ensemble de données, vous pouvez utiliser trois techniques :
+	\begin{itemize}
+		\item[*] 	Sur-échantillonnage – Le sur-échantillonnage est une technique qui consiste à enrichir un ensemble de données avec des données générées par la classe minoritaire. La technique de sur-échantillonnage synthétique des minorités (SMOTE) est la méthode la plus couramment utilisée ; elle sélectionne un échantillon aléatoire de la classe minoritaire
+		\item[*] 	Sous-échantillonnage – Le sous-échantillonnage consiste à réduire un ensemble de données et à éliminer les données identiques de la classe majoritaire. Les deux principaux algorithmes utilisés dans cette méthode sont TomekLinks , qui élimine les observations basées sur le plus proche voisin, et Edited Nearest Neighbors (ENN).
+		\item[*] Sur-échantillonnage hybride – La stratégie hybride intègre à la fois le sur-échantillonnage et le sous-échantillonnage dans votre jeu de données. L'une des méthodes utilisées est SMOTEENN , qui utilise l'algorithme SMOTE pour le sur-échantillonnage minoritaire et l'algorithme ENN pour le sous-échantillonnage majoritaire.
+	\end{itemize}
+	\subsubsection{Données d'échantillonnage}Plus vous disposez de données, plus le modèle est précis. Cependant, certains algorithmes d'apprentissage automatique peuvent avoir du mal à gérer une grande quantité de données, ce qui peut entraîner des problèmes tels que la saturation de la mémoire, une augmentation des calculs nécessaires à la mise à jour des paramètres du modèle, etc.
+	
+	
+	\subsection{Meilleures pratiques de pré-traitement des données}
+	\begin{enumerate}
+		\item \textbf{Enrichissement des données :}
+		À cette étape, les spécialistes des données utilisent diverses bibliothèques d'ingénierie de caractéristiques pour apporter les modifications nécessaires. Le résultat final devrait être un ensemble de données organisé de manière à trouver le meilleur équilibre entre le temps d'apprentissage d'un nouveau modèle et les besoins de calcul avec par exemple.
+		\item \textbf{Validation des données :}
+		La validation des données commence par leur séparation en deux ensembles. Le premier sert à entraîner un algorithme de machine learning ou de deep learning. Le second sert de données de test et permet d'évaluer l'exactitude et la robustesse du modèle final. Cette deuxième étape permet d'identifier les problèmes liés aux hypothèses utilisées pour le nettoyage des données et l'ingénierie des caractéristiques.
+		Si l'équipe est satisfaite des résultats, elle peut confier le pré-traitement à un ingénieur de données, qui choisira comment le mettre à l'échelle pour la production. Dans le cas contraire, les spécialistes des données peuvent revenir en arrière et ajuster leurs procédures de nettoyage des données et d'ingénierie des fonctionnalités.
+	\end{enumerate}
+	
+		\begin{center}
+			\includegraphics[scale=0.7]{./pre post-processing}
+		
+		\end{center}
+	
+	\section{Post-traitement}
+	\subsection{Qu'est-ce que le post-traitement ?}Le post-traitement est défini comme le traitement des résultats d'un modèle après son exécution. Il est utile pour appliquer des contraintes d'équité sans nécessairement modifier le modèle. \\
+	Par exemple, on pourrait post-traiter un classificateur binaire en définissant un seuil de classification pour garantir que l’égalité des chances pour un attribut donné est maintenue en vérifiant si les taux de vrais positifs sont les mêmes quel que soit l’attribut en question.\\
+	Le post-traitement des données est une étape essentielle en fouille de données qui vise à exploiter efficacement les résultats obtenus après l'application des algorithmes de data mining. Il permet d'affiner ou évaluer la performance des modèles et identifier les limites, de  visualiser et d'interpréter les résultats de manière compréhensible et enfin d’exploiter les connaissances extraites (résultats) pour garantir des décisions pertinentes. Cette étape suit généralement trois phases principales : l’évaluation des modèles, la visualisation des résultats et l’exploitation des analyses pour la prise de décision.
+	\subsection{Importance du post-traitement}La découverte de connaissances dans les bases de données (KDD) est devenue une discipline très attractive, tant pour la recherche que pour l'industrie, ces dernières années. Son objectif est d'extraire des « morceaux » de connaissances de bases de données généralement très volumineuses. Elle décrit une séquence robuste de procédures à exécuter pour obtenir des résultats raisonnables et compréhensibles. 
+	\subparagraph{}Selon notre compréhension, la découverte de connaissances désigne le processus global de détermination de connaissances utiles à partir de bases de données, c'est-à-dire l'extraction de connaissances de haut niveau à partir de données de bas niveau dans le contexte de grandes bases de données. La découverte de connaissances peut être considérée comme une activité multidisciplinaire car elle exploite plusieurs disciplines de recherche en intelligence artificielle telles que l'apprentissage automatique, la reconnaissance de formes, les systèmes experts, l'acquisition de connaissances, ainsi que des disciplines mathématiques telles que les statistiques, la théorie de l'information et le traitement des incertitudes.
+	\subparagraph{Les composants de post-traitement en KDD peuvent être classés dans les groupes suivants: }
+	\begin{itemize}
+		\item filtrage des connaissances ; 
+		\item interprétation et explication ; 
+		\item évaluation ; 
+		\item et intégration des connaissances.
+	\end{itemize}
+	\subparagraph{}Dans le cas d'algorithmes d'apprentissage automatique tels que les arbres ou les règles de  décision formées à partir de données bruitées, les résultats sont générés à partir de peu de données d'apprentissage. Ceci est dû au fait que les algorithmes d'induction tentent de subdiviser l'ensemble des données d'apprentissage. Pour surmonter ce problème, les arbres de décision ou les règles doivent être réduits, soit par élagage (arbres de décision), soit par troncature (règles de décision). Après avoir obtenu de nouvelles connaissances, celles-ci peuvent être soit implémentées dans un système expert, soit utilisées par un utilisateur final. 
+	\subparagraph{}Dans ce dernier cas, les résultats de la connaissance doivent être documentés pour permettre l'interprétation par l'utilisateur final. Une autre possibilité est d'afficher les connaissances et de les transformer en une forme compréhensible pour l'utilisateur final. Nous pouvons également vérifier que les nouvelles connaissances ne sont pas en conflit avec les connaissances induites précédemment. 
+	\begin{enumerate}
+		\item \textbf{Filtrage des connaissances : } Troncature des règles et élagage a posteriori
+		Si les données d'apprentissage sont bruyantes, l'algorithme inductif génère des feuilles d'un arbre de décision ou des règles de décision qui couvrent un très petit nombre d'objets d'apprentissage. Cela est dû au fait que l'algorithme inductif (d'apprentissage) tente de diviser les sous-ensembles d'objets d'apprentissage en sous-ensembles encore plus petits qui seraient véritablement cohérents.  
+		\subparagraph{} Pour surmonter ce problème, un arbre ou un ensemble de règles de décision doit être réduit, soit par élagage (arbres de décision), soit par troncature.
+		Post-pruning (arbres de décision) ou par troncation (règles de décision)
+		\item \textbf{Interprétation et explication :} Maintenant, nous pouvons utiliser les connaissances acquises directement pour la prédiction ou dans un système expert comme une base de connaissances.
+		en tant que base de connaissances, Si le processus de découverte des connaissances est pour un utilisateur final, nous documentons généralement les résultats obtenus. Une autre possibilité consiste à visualiser les connaissances ou à les transformer en une forme compréhensible pour l'utilisateur final. En outre, nous pouvons également vérifier que les nouvelles connaissances ne sont pas en conflit avec les connaissances induites précédemment. Dans cette étape, nous pouvons également résumer les règles et les combiner avec une connaissance spécifique au domaine fournie pour la tâche donnée.
+		\item \textbf{Évaluation :} Après qu'un système d'apprentissage a induit des hypothèses conceptuelles (modèles) à partir de l'ensemble d'apprentissage, leur évaluation (ou test) doit avoir lieu. Il existe plusieurs critères largement utilisés à cette fin de classification, la compréhensibilité, la complexité de calcul, etc.
+		\item \textbf{) Intégration des connaissances :} Les systèmes traditionnels de prise de décision traditionnels dépendent d'une technique, d'une stratégie ou d'un modèle unique. Les nouveaux systèmes sophistiqués d'aide à la décision, combinent ou affinent les résultats obtenus à partir de plusieurs modèles, produits généralement par différentes méthodes. Ce processus augmente la précision et les chances de succès.
+	\end{enumerate}
+	\subsection{Quelques méthodes de post-traitement}
+	\subsubsection{	Évaluation des modèles et interprétation des résultats}
+	\begin{enumerate}
+		\item \justifying Un modèle de classification est un modèle qui prédit des catégories  il en existe deux types d’algorithmes :
+		\begin{itemize}
+			\item \justifying \textbf{Régression logistique simple : } qui est un algorithme d’apprentissage permettant de prédire une variable catégorielle en fonction d’une et une seule variable d’entrée.
+			\item \justifying \textbf{Régression logistique multiple :} qui est un algorithme permettant de prédire une variable catégorielle en fonction de plusieurs variables d’entrées.
+		\end{itemize} \justifying
+		Pour mesurer la performance de ce modèle, on utilise les métriques de classification suivantes :
+		\begin{enumerate}
+			\item \justifying \textbf{Matrice de confusion : } qui est une matrice qui croise les valeurs réelles (CP et CN) avec les valeurs de prédictions ceci en montrant  la répartition des vraies et fausses prédictions (PP et PN) entre les classes et en indiquant les faux positifs (FP) et faux négatifs (FN). Elle est définie comme suit :
+			\subparagraph{}
+			\centering
+			\begin{tabular}	{|c|c|c|}
+				\hline \rowcolor{cyan} - & PP & PN\\ \hline
+				CP & VP & FN \\
+				\hline
+				CN & FP & VN \\
+				\hline
+			\end{tabular}
+			\item \justifying \textbf{Accuracy (taux de précision globale) : } il permet de donner l’exactitude sur les classements  ceci en mesurant le pourcentage des bons classements du modèle. Il est donné par :
+			\\ \centering
+			\begin{align*}
+				Accuracy=\dfrac{VP+VN}{VP+VN+FP+FN}
+			\end{align*} 
+			\item \justifying \textbf{Précision, recall et f1-score : } 
+			\begin{itemize}
+				\item \justifying	\textbf{Précision: } mesure la proportion ou le pourcentage de prédictions correctes parmi celles qui ont été classées comme positives par le modèle.\\
+				\begin{align*}
+					Précision=\frac{VP}{VP+FP}
+				\end{align*} 
+				\item \justifying	\textbf{Rappel (recall): } qui est la proportion des prédictions positives classées dans le modèle parmi les prédictions positives effectuées par le modèle.\\
+				\begin{align*}
+					Rappel|recall=\frac{VP}{VP+FN}
+				\end{align*}\newpage 
+				\item \justifying \textbf{	F1-score :} qui est l’équilibre entre précision et rappel, permet de calculer la moyenne harmonique entre la précision et le rappel.
+				\begin{align*}
+					\dfrac{2}{F1-Score}=\frac{1}{rappel}+\dfrac{1}{precision}
+				\end{align*}
+				\begin{align*}
+					F1-score=\frac{2 Rappel×Precision}{Rappel+Precision}
+				\end{align*}
+			\end{itemize}
+			\item \justifying \textbf{Courbe ROC (Receiver Operating Characteristic) \& AUC (Area Under the Curve) : } les courbes ROC qui sont utilisées pour évaluer les modèles de classification binaire et  montrées  le compromis entre le taux de vrais positifs et le taux de faux positifs en faisant varier le seuil de décision du modèle , et l'AUC qui  mesure la surface sous la courbe roc : un AUC proche de 1 signifie un bon modèle, tandis qu’un  AUC proche de 0.5 signifie un modèle aléatoire.
+		\end{enumerate}
+		\item \justifying \textbf{Évaluation des modèles de régression}\\ Les modèles de régression prédisent une valeur dépendante ou continue, il existe deux algorithmes de ce modèle :
+		\begin{itemize}
+			\item[$\delta$] \justifying \textbf{Régression linéaire simple : } qui vise à prédire une variable cible (ou dépendante) à partir d’une variable d’entrée. Elle est donnée par l’équation suivante : $Y=aX+b$
+			\item[$\delta$] \justifying \textbf{régression linéaire multiple : } qui permet de prédire une variable cible à partir de plusieurs variables indépendantes, elle est donnée par : 
+			$
+				Y = a_{0}+a_{1}x_{1}+a_{2}x_{2}+\cdots+a_{n}x_{n} = \sum_{i=1}^{n}a_{i}x_{i}
+			$\\
+			Sa performance est mesurée en utilisant les métriques de régression suivantes :	
+			\begin{itemize}
+				\item[$\phi$] \justifying \textbf{MSE (Mean Squared Error) :} qui est l’erreur quadratique moyenne plus elle est faible, plus le modèle est précis. Elle est donnée par : $\sum(y-$\={y}$)^{2} $
+				\item[$\phi$] \justifying  \textbf{MAE (Mean Absolute Error) : } qui est l’erreur absolue moyenne et indique l’erreur moyenne en valeurs absolues. Elle est donnée par : $MAE = \sum\mid y-$\={y}$\mid$
+			\end{itemize}
+			\item[$\delta$] \justifying \textbf{Le coefficient de détermination (RMSE ou $R^{2}$) : } elle mesure la proportion de variance expliquée par le modèle. Plus il est proche de 1, mieux le modèle explique les données.
+		\end{itemize}
+		\newpage
+		
+			
+		\item \justifying
+		
+		
+		
+		\textbf{Évaluation des modèles de clustering} Les modèles de clustering sont des modèles qui regroupent les données sans labels prédéfinis. Comme algorithme de ce modèle nous avons : le k-means qui est un algorithme permettant de regrouper les données en k-groupes (appelés clusters) en fonction d’une mesure de similarité eu de dissimilarité. Sa performance est mesurée par l’utilisation de métriques suivantes :
+		\begin{itemize}
+			\item \justifying \textbf{Indice de silhouette ou silhouet score :} qui est une métrique d’apprentissage non supervisé permettant de superviser à quel point un individu est bien classe dans son cluster par rapport aux autres clusters. Il permet de déterminer le niveau d’homogénéité entre clusters, sa valeur est toujours comprise entre [-1,1].\newline
+			\textbf{Interprétations :}\\\begin{enumerate}
+				\item[] \justifying	Si l’indice de silhouette est proche de 1 alors les individus sont bien classés par leurs clusters
+				\item \justifying 	Si elle est proche de 0 alors l’individu est en frontière entre plusieurs clusters
+				\item \justifying Si elle est négative alors l’individu est mal classé.
+			\end{enumerate}
+			\item \justifying \textbf{SSE (Sum of Squared Errors) \& Distorsion Intra-Cluster :} elle mesure la compacité des clusters c’est-à-dire a quel  point les points d’un même cluster sont rapprochés autour du centroïde. Elle est donnée par : $\sum_{k=1}^{n}\sum_{x_{i}\in K}\Arrowvert x_{i}-\mu_{k}\Arrowvert^{2}$\\
+			$C_{k}$: un cluster,\\
+			$X_{i}$: les points appartenant au cluster $C_{k}$, \\
+			$\mu_{k}$: le centroide du cluster,\\
+			$\Arrowvert x_{i}-\mu_{k}\Arrowvert^{2} $ est la distance quadratique entre chaque point et son centroide.\\\textbf{Interprétations :}\\
+			\begin{enumerate}
+				\item \justifying Si les points sont proches du centre du cluster alors on a une faible distorsion intra-cluster et par conséquent un meilleur clustering.
+				\item \justifying 	Si les points sont éloignés du centre du cluster alors on a une forte distorsion intra-cluster et par conséquent une mauvaise qualité du clustering.
+			\end{enumerate}
+			\item \justifying \textbf{Davies-Bouldin Index :} Mesure la séparation entre les clusters.
+			\item \justifying \textbf{Calinski-Harabasz Index :} Évalue la densité des clusters par rapport à la dispersion.
+			Ces deux méthodes sont possible avec des outils comme Scikit-learn (Python) et clusterCrit (R).
+		\end{itemize}
+		\item \justifying \textbf{	Évaluation de modèles par arbres de décisions}\\ Ils sont représentés sous forme d’arborescence dans laquelle les nœuds feuilles représentent les classes à prédire et un nœud interne et une arête sortante une règle de décision. On évalue sa performance par :
+		\begin{enumerate}
+			\item IDs Entropie $C_{4.5}$
+			\item CART Indice de Gini
+		\end{enumerate}
+		\item \justifying \textbf{	Evaluation de modèle par SVM (Support Vector Machin) ou machine de support de vecteur}\\ Il permet de trouver l’hyperplan optimal de réparation d’un ensemble de points dans un ensemble de caractéristiques.
+		\item \justifying etc.
+	
+	\end{enumerate}
+	\subsubsection{	Visualisation des résultats}
+	La visualisation des résultats  est essentielle car les résultats des analyses peuvent être complexes et difficiles à interpréter sous forme brute (tableaux, valeurs numériques, métriques, etc. Elle consiste à représenter graphiquement les données et les résultats des algorithmes de data mining afin de mieux :
+	\begin{itemize}
+		\item[$\phi$] \justifying Faciliter l’interprétation des données c’est-à-dire comprendre la structure et les relations entre les variables.
+		\item[$\phi$] \justifying Évaluer la qualité des modèles c’est-à-dire identifier les erreurs, biais et performances des algorithmes.
+		\item[$\phi$] \justifying communiquer les résultats efficacement : permettre aux décideurs de prendre de décisions basées sur les analyses.
+		\item[$\phi$] \justifying etc. 
+	\end{itemize}
+	\begin{enumerate}
+		\item \justifying 	\textbf{Types de visualisation selon le type d’analyse}\\
+		La visualisation des données permet d’explorer, d’analyser et de présenter l’information de manière claire et intuitive. Voici les principaux types de visualisation, classés selon leur usage dans le tableau ci-dessous :
+		\begin{enumerate}\newpage
+			\item \justifying \textbf{Visualisation pour la distribution des données}
+			\begin{enumerate}
+				\item \justifying \textbf{Histogramme }: qui montre la fréquence des valeurs d’une variable.
+				\begin{figure}[h]
+					\centering
+					\includegraphics[scale=.2]{./14}
+					\caption{histogramme}
+				\end{figure}
+				\item \justifying \textbf{ Boîte à moustaches (Boxplot)} : qui  détecte les outliers (ou valeurs aberrantes celles qui diffèrent significativement des autres observations du jeu de données).
+				\begin{figure}[h]
+					\centering
+					\includegraphics[scale=.2]{./13}
+					\caption{Boxplot}
+				\end{figure}
+				\item \justifying \textbf{ Nuage de points (scatter plot) :}  qui  visualise la relation entre deux variables
+				\begin{figure}[h]
+					\centering
+					\includegraphics[scale=.2]{./5}
+					\caption{scatter plot}
+				\end{figure}
+			\end{enumerate} \newpage
+			\item \justifying \textbf{
+				Visualisation des résultats pour la classification
+			}
+			\begin{enumerate}
+				\item \justifying \textbf{Matrice de confusion :} qui  montre les erreurs de classification (faux positifs, faux négatifs).
+				\begin{figure}[h]
+					\centering
+					\includegraphics[scale=.2]{./11}
+					\caption{Matrice de confusion}
+				\end{figure} 
+			
+				\item \justifying \textbf{Courbe ROC \& AUC :} qui  évalue la capacité du modèle à distinguer les classes.
+			\begin{figure}[h]
+				\centering
+				\includegraphics[scale=.2]{./8}
+				\caption{Courbe ROC \& AUC}
+			\end{figure} 
+			
+			\item \justifying \textbf{Diagramme en barres :} pour  montrer la répartition des prédictions par classe.
+			\begin{figure}[h]
+				\centering
+				\includegraphics[scale=.2]{./9}
+				\caption{Diagramme en barres }
+			\end{figure}
+			
+			\end{enumerate}\newpage
+			\item \justifying \textbf{
+				Visualisation pour la régression
+			}\\
+			\begin{enumerate}
+				\item \justifying \textbf{Courbe de tendance :} qui montre la relation entre la variable cible et les prédicteurs.
+				\begin{figure}[h]
+					\centering
+					\includegraphics[scale=.2]{./8}
+					\caption{Courbe de tendance}
+				\end{figure} 
+				
+				\item \justifying \textbf{Résidus vs valeurs prédites} : qui identifie si le modèle a un biais ou une variance excessive.
+				\begin{figure}[h]
+					\centering
+					\includegraphics[scale=.2]{./7}
+					\caption{Résidus vs valeurs prédites  }
+				\end{figure} 
+			\end{enumerate}
+			\item \justifying \textbf{Visualisation pour le clustering}\\
+			\begin{enumerate}
+				\item \justifying \textbf{Nuage de points coloré par cluster :} permettant de voir si les groupes sont bien distincts.
+				\begin{figure}[h]
+				\centering
+				\includegraphics[scale=.2]{./4}
+				\caption{Nuage de points coloré par cluster }
+				\end{figure} \newpage
+				\item \justifying \textbf{Indice de silhouette }: qui mesure la qualité du clustering.
+				\begin{figure}[h]
+				\centering
+				\includegraphics[scale=.15]{./3}
+				\caption{Indice de silhouette  }
+				\end{figure} 
+			
+		\end{enumerate}
+			 
+			\item \justifying \textbf{
+				Visualisation pour les corrélations et relations entre variables
+			}
+			\begin{enumerate}
+				\item \justifying \textbf{Heatmap (carte de chaleur) }: qui  montre les corrélations entre variables.
+				\begin{figure}[h]
+					\centering
+					\includegraphics[scale=.15]{./2}
+					\caption{Heatmap (carte de chaleur)   }
+				\end{figure} \newpage 
+				\item \justifying \textbf{Graphes de réseau }: qui sont  utile pour analyser les relations entre éléments  
+				\begin{figure}[h]
+					\centering
+					\includegraphics[scale=.15]{./1}
+					\caption{Graphes de réseau  }
+				\end{figure}
+			\end{enumerate}
+			
+		\end{enumerate}
+	
+	\end{enumerate}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=.5]{./post}
+		\caption{récapitulatif}
+	\end{figure}
+		
+	
+	\section{Conclusion}\justifying Le pré-traitement \cite{pré}
+	 des données est essentiel aux premières phases de l’extraction de données. Dans le domaine de l'IA \footnote{IA: Intelligence artificielle}, le pré-traitement améliore la qualité des données \cite{ps} en les nettoyant, en les transformant et en les formatant afin d'accroître la précision d'un nouveau modèle tout en minimisant la quantité de calculs nécessaires tandis que le post-traitement \cite{Postprocessing} consiste à raffiner, au monitoring et à optimiser notre modèle pour une amélioration de performance.efficaces.
+	Ainsi, le pré-traitement et le post-traitement ne sont pas de simples étapes techniques : ils constituent des leviers stratégiques pour exploiter pleinement le potentiel des données et répondre aux défis du monde numérique.
+	sans un bon post-traitement, même les modèles les plus avancés peuvent produire des résultats difficiles à exploiter et à interpréter, réduisant ainsi leur impact dans la prise de décision. 
+	De ce fait, avec l’ère du numérique où les décisions basées sur les données \cite{tech} influencent des domaines aussi variés que la finance, la santé, la sécurité et l’industrie, maîtriser ces deux étapes est un impératif. L’enjeu est donc de développer des méthodes et des outils performants permettant d’optimiser chaque phase du cycle d’analyse, afin de garantir des décisions éclairées et efficaces.
+	Ainsi, le pré-traitement et le post-traitement ne sont pas de simples étapes techniques : ils constituent des leviers stratégiques pour exploiter\cite{exo} pleinement le potentiel des données et répondre aux défis du monde numérique.
+	
+	
+	% Affichage de la bibliographie
+
+	    \printbibliography
+	\newpage
+	\section{\textbf{Fiche de TD} }
+	\subsection*{Exercice 1}Pourquoi et comment traiter les valeurs manquantes.                                  Expliquer en utilisant des exemples les méthodes traitées au cours et TP.               \\ Pour diverses raisons (oublis, erreurs, non disponibilité, non communiqué,…) des valeurs sont manquantes (absentes), Il parait judicieux de les remplacer par des valeurs estimées pour permettre aux algorithmes d’apprentissage automatique de mieux fonctionner et d’améliorer leurs performances. Sans oublier que certains algorithmes ne fonctionnent pas si le dataset contient des valeurs manquantes. 
+	\paragraph{Réponses :}
+	\begin{enumerate}
+		\item \justifying Supprimer tout simplement l’instance contenant des valeurs manquantes 
+		\item \justifying Considérer la valeur manquante comme une valeur à part
+		\item \justifying Remplacer par la valeur (moyenne, médiane, mode) des valeurs des attributs de la même classe
+		\item \justifying Remplacer par la valeur la plus fréquente.
+		\item \justifying Faire une prédiction de la valeur manquante en construisant un modèle à l’aide d’un algorithme d’apprentissage KNN ou autres.
+	\end{enumerate}
+	\subsection*{Exercice 2} Supposez que l’on veuille développer un modèle de prédiction du succès d’un smartphone.  Expliquer en détail comment on procédera dans l’approche data mining.  Quel est l’intérêt d’une telle approche ?  Proposer un bon résumé de fichier arff pour, selon vous, résoudre ce problème.
+	\paragraph{Réponses: } Créer une base de données  en faisant une recherche sur le net ou ailleurs. Puisque la classe est succès, la base contiendra un max d’exemples positifs et négatifs. Chaque smartphone sur le marché devient un exemple. Chaque caractéristique  deviendra une valeur d’attribut possible. L’ensemble des caractéristique sera maximum défini et fixé dès le départ.\\ \textbf{Intérêt : }  Seulement à partir d’exemples (positifs et négatifs), des algorithmes dédiés sont capable la connaissance descriptive du concept « smartphone à succès ». Aucun autre apport n’est nécessaire. D’où l’intérêt de cette science
+	
+	\subsection*{Exercice 3 } Donner le pourquoi et le principe des méthodes ensemblistes. Comparer les algorithmes bagging et boosting (vus au cours) étape par étape (apprentissage et classification), donner les similarités et les différences. Expliquez les paramètres de chacun. Quel est le meilleur et pourquoi ?       \\	                                                 \textbf{Réponses:}
+	\paragraph{Pourquoi et principe : } Faire  Travailler ensemble plusieurs modèles de performances moyennes d’une même application développés sur un même dataset modifiés à chaque fois, ou avec différentes algorithmes d’apprentissage automatique. Dans l’espoir de voir l’ensemble prédire, classifier, clusteriser avec plus d’efficacité que le modèle unique.
+	\centering\newline
+	\begin{tabular}{|>{\raggedright\arraybackslash}p{6cm}|>{\raggedright\arraybackslash}p{6cm}|}
+		\hline \rowcolor{cyan} \textbf{{ BAGGING }} & \textbf{{ BOOSTING }}\\ \hline
+		\begin{enumerate}
+			\item \justifying  Un seul dataset initial   
+			\item \justifying  Générer n dataset exactement dès le départ (parallèlisable)
+			\item \justifying  Appliquer le même algorithme sur tout les datasets (parallélisable)
+			\item \justifying  Prédit la classe en utilisant tout les modeles crées.
+			\item \justifying  La classe a plus fréquente en cas de classification. La moyenne des réponses en cas de régression
+		\end{enumerate}
+		& \begin{enumerate}
+			\item \justifying  Un seul dataset initial  
+			\item \justifying  N ou moins datasets seront générés les uns après les autres par repondération des instances mal classées par les modèles précédents.
+			\item \justifying  Appliquer le même algorithme de manière sequentielle.
+			\item \justifying  Calculer l’erreur sur le dataset pondéré.
+			\item \justifying  S’arrêter si l’erreur est nulle ou sup »rieur à 0.5 
+			\item \justifying  Reponderer les instances en utilisant cette erreur avant d’appliquer de nouveau l’algorithme.
+			\item \justifying  Normaliser les poids.
+			\item \justifying  Prédit la classe en utilisant tout les modeles crées.
+		\end{enumerate}
+		\\
+		\hline
+	\end{tabular}
+	\justifying
+	\paragraph{}Les paramètres sont l’algorithme et le nombre de modèles à combiner. Le meilleur et pourquoi : Chaque méta algorithme fonctionnera de manière optimale, si des conditions précises sont vérifiées. Pour le bagging, par exemple, on aura besoin d’un algorithme instable, sans oublier que des instances seront repetés ans le dataset construit, alors qu’ils ne le sont pas dans le dataset original. Pour le boosting, par exemple, les instances seront pondérés de manière particulière, d’où la nécessité pour l’algorithme de les gérer.
+	
+	\subsection*{Exercice 4 :   } \justifying Selon la kappa statistic, lequel des deux modèles de classification est le plus performant : 
+	\begin{table}[h]
+		\centering
+		\includegraphics[scale=.6]{./t1}
+		\caption{Matrice de confusion Modèle 1}
+	\end{table}
+	\begin{table}[h]
+		\centering
+		\includegraphics[scale=.6]{./t2}
+		\caption{Matrice de confusion Modèle 2}
+	\end{table}
+	\paragraph{réponse: } $Kappa M1 = 0.43$ \\       $Kappa M2 = 0.50$\\ Le meilleur modèle est M2
+	\newpage
+	
+	\subsection*{Exercice 5 :} \justifying Selon la MAE (mean absolut error), lequel des deux modèles de régression est le plus performant :
+	\begin{table}[h]
+		\centering
+		\includegraphics[scale=.7]{./t3}
+		\caption{données récoltées}
+	\end{table}
+	\paragraph{réponse: } $MAE1 = 5.5/8 = 0.6875$ \\       $MAE2 = 3.8/8 = 0.475$\\ Le meilleur modèle est M2
+	
+	
+\end{document}

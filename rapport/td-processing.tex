@@ -1,0 +1,89 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage{array,multirow,makecell}
+\setcellgapes{1pt}
+\usepackage{ragged2e}
+\usepackage[french]{babel}  
+\usepackage[table]{xcolor}
+\usepackage{ragged2e}
+\usepackage{graphicx}
+\usepackage[style=numeric]{biblatex}
+\addbibresource{references.bib}    
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{csquotes}
+
+
+\begin{document}
+	\setlength{\arrayrulewidth}{0.2mm}   % Épaisseur des lignes du tableau
+	\setlength{\tabcolsep}{12pt}          % Espacement entre les colonnes
+	\renewcommand{\arraystretch}{1.5} 
+	
+	
+	
+	\section{{\Huge Fiche de TD}}
+	\subsection*{Exercice 1}Pourquoi et comment traiter les valeurs manquantes.                                  Expliquer en utilisant des exemples les méthodes traitées au cours et TP.               \\ Pour diverses raisons (oublis, erreurs, non disponibilité, non communiqué,…) des valeurs sont manquantes (absentes), Il parait judicieux de les remplacer par des valeurs estimées pour permettre aux algorithmes d’apprentissage automatique de mieux fonctionner et d’améliorer leurs performances. Sans oublier que certains algorithmes ne fonctionnent pas si le dataset contient des valeurs manquantes. 
+	\paragraph{Réponses :}
+	\begin{enumerate}
+		\item \justifying Supprimer tout simplement l’instance contenant des valeurs manquantes 
+		\item \justifying Considérer la valeur manquante comme une valeur à part
+		\item \justifying Remplacer par la valeur (moyenne, médiane, mode) des valeurs des attributs de la même classe
+		\item \justifying Remplacer par la valeur la plus fréquente.
+		\item \justifying Faire une prédiction de la valeur manquante en construisant un modèle à l’aide d’un algorithme d’apprentissage KNN ou autres.
+	\end{enumerate}
+	\subsection*{Exercice 2} Supposez que l’on veuille développer un modèle de prédiction du succès d’un smartphone.  Expliquer en détail comment on procédera dans l’approche data mining.  Quel est l’intérêt d’une telle approche ?  Proposer un bon résumé de fichier arff pour, selon vous, résoudre ce problème.
+	\paragraph{Réponses: } Créer une base de données  en faisant une recherche sur le net ou ailleurs. Puisque la classe est succès, la base contiendra un max d’exemples positifs et négatifs. Chaque smartphone sur le marché devient un exemple. Chaque caractéristique  deviendra une valeur d’attribut possible. L’ensemble des caractéristique sera maximum défini et fixé dès le départ.\\ \textbf{Intérêt : }  Seulement à partir d’exemples (positifs et négatifs), des algorithmes dédiés sont capable la connaissance descriptive du concept « smartphone à succès ». Aucun autre apport n’est nécessaire. D’où l’intérêt de cette science
+	
+	\subsection*{Exercice 3 } Donner le pourquoi et le principe des méthodes ensemblistes. Comparer les algorithmes bagging et boosting (vus au cours) étape par étape (apprentissage et classification), donner les similarités et les différences. Expliquez les paramètres de chacun. Quel est le meilleur et pourquoi ?       \\	                                                 \textbf{Réponses:}
+	\paragraph{Pourquoi et principe : } Faire  Travailler ensemble plusieurs modèles de performances moyennes d’une même application développés sur un même dataset modifiés à chaque fois, ou avec différentes algorithmes d’apprentissage automatique. Dans l’espoir de voir l’ensemble prédire, classifier, clusteriser avec plus d’efficacité que le modèle unique.
+		\centering
+	\begin{tabular}{|>{\raggedright\arraybackslash}p{6cm}|>{\raggedright\arraybackslash}p{6cm}|}
+		\hline \rowcolor{cyan} \textbf{{ BAGGING }} & \textbf{{ BOOSTING }}\\ \hline
+		\begin{enumerate}
+			\item \justifying  Un seul dataset initial   
+			\item \justifying  Générer n dataset exactement dès le départ (parallèlisable)
+			\item \justifying  Appliquer le même algorithme sur tout les datasets (parallelisable)
+			\item \justifying  Prédit la classe en utilisant tout les modeles crées.
+			\item \justifying  La classe a plus fréquente en cas de classification. La moyenne des réponses en cas de régression
+		\end{enumerate}
+		& \begin{enumerate}
+			\item \justifying  Un seul dataset initial  
+			\item \justifying  N ou moins datasets seront générés les uns après les autres par repondération des instances mal classées par les modèles precedents.
+			\item \justifying  Appliquer le meme algorithme de manière sequentielle.
+			\item \justifying  Calculer l’erreur sur le dataset pondéré.
+			\item \justifying  S’arreter si l’erreur est nulle ou sup »rieur à 0.5 
+			\item \justifying  Reponderer les instances en utilisant cette erreur avant d’appliquer de nouveau l’algorithme.
+			\item \justifying  Nomaliser les poids. 8. Prédit la classe en utilisant tout les modeles crées.
+
+		\end{enumerate}
+		\\
+		\hline
+	\end{tabular}
+	\paragraph{}Les paramètres sont l’algorithme et le nombre de modèles à combiner. Le meilleur et pourquoi : Chaque méta algorithme fonctionnera de manière optimale, si des conditions précises sont vérifiées. Pour le bagging, par exemple, on aura besoin d’un algorithme instable, sans oublier que des instances seront repetés ans le dataset construit, alors qu’ils ne le sont pas dans le dataset original. Pour le boosting, par exemple, les instances seront pondérés de manière particulière, d’où la nécessité pour l’algorithme de les gérer.
+	
+	\subsection*{Exercice 4 :   } Selon la kappa statistic, lequel des deux modèles de classification est le plus performant : 
+	
+	
+	\begin{table}[h]
+		\centering
+		\includegraphics[scale=.6]{./t1}
+		\caption{Matrice de confusion Modèle 1}
+	\end{table}
+	\begin{table}[h]
+		\centering
+		\includegraphics[scale=.6]{./t2}
+		\caption{Matrice de confusion Modèle 2}
+	\end{table}
+	\paragraph{réponse: } $Kappa M1 = 0.43$ \\       $Kappa M2 = 0.50$\\ Le meilleur modèle est M2
+	\newpage
+	\subsection*{Exercice 5 :}  Selon la MAE (mean absolut error), lequel des deux modèles de régression est le plus performant :
+	\begin{table}[h]
+		\centering
+		\includegraphics[scale=.7]{./t3}
+		\caption{données récoltées}
+	\end{table}
+	\paragraph{réponse: } $MAE1 = 5.5/8 = 0.6875$ \\       $MAE2 = 3.8/8 = 0.475$\\ Le meilleur modèle est M2
+	 
+	
+\end{document}
